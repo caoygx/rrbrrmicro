@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: api-gateway   #本服务的名称
+  cloud:                           #注册到nacos
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    # 网关配置
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+            allowedMethods: "*"
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      # 配置路由规则
+      routes:
+        # 路由ID（一个路由配置一个ID）
+        - id: datafile-client
+
+          # 通过注册中心来查找服务（lb代表从注册中心获取服务，并且负载均衡）
+          uri: lb://datafile-client
+
+          # 匹配到的以/product开头的路径都转发到product的服务，相当于访问 lb://PRODUCT-SERVICE/**
+          predicates:
+            - Path=/datafile/**
+
+          # 去掉匹配到的路径的第一段
+          filters:
+            - StripPrefix=1
+
+        - id: kity-client
+          uri: lb://kity-client
+          predicates:
+            - Path=/kity/**
+          filters:
+            - StripPrefix=1
+
+  datasource:
+    name: test
+    url: jdbc:mysql://192.168.27.118:3306/tool?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
+  type-aliases-package: com.rrbrr.tool.entity  # 注意：对应实体类的路径
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+server:
+  port: 8002
+

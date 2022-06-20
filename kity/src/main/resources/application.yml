@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: kity-provider   #本服务的名称
+  cloud:                           #注册到nacos
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  datasource:
+    name: test
+#    url: jdbc:mysql://192.168.27.118:3306/tool?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://192.168.237.135:3306/tool?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
+  type-aliases-package: com.rrbrr.kity.entity  # 注意：对应实体类的路径
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+server:
+  port: 2201
+
+debug: true
+
+
+
+
+

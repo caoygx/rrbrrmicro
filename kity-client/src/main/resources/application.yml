@@ -1,0 +1,69 @@
+spring:
+  application:
+    name: kity-client   #本服务的名称
+  cloud:                           #注册到nacos
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  datasource:
+    name: test
+    url: jdbc:mysql://192.168.27.118:3306/tool?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
+  type-aliases-package: com.rrbrr.tool.entity  # 注意：对应实体类的路径
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+server:
+  port: 2301
+
+
+logging:
+  level:
+    ROOT: INFO
+    #针对指定的类 设置输出级别
+    com.no.datafileclient.service*: debug
+feign:
+  client:
+    config:
+      downfile:
+        connect-timeout: 2000
+        read-timeout: 30000
+      default:
+        loggerLevel: FULL
+        #针对某个级别设置输出级别(设置局部的优先级别是最高的)
+      Book-service:
+        loggerLevel: FULL
+  hystrix:
+    enabled: true
+
+
+hystrix:
+  command:
+#    DownfileService#batchDownload():
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: 90000
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 90000
+
+
+ribbon:
+  ConnectTimeout: 2000
+  ReadTimeout: 90000
