@@ -4,9 +4,11 @@ package com.rrbrr.kity.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.no.global.entity.QueryBean;
 import com.rrbrr.kity.entity.FamilyMember;
 import com.rrbrr.kity.service.IFamilyMemberService;
+import com.rrbrr.kity.service.impl.FamilyMemberServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +28,7 @@ import java.util.Map;
 public class FamilyMemberController {
 
     @Autowired
-    IFamilyMemberService familyMemberService;
+    FamilyMemberServiceImpl familyMemberService;
 
     @RequestMapping(value = "/test", method = {RequestMethod.POST})
     public String test(@RequestBody JSONObject jsonObject) {
@@ -94,6 +96,14 @@ public class FamilyMemberController {
 
     @RequestMapping("index")
     public String index(){
+        QueryBean queryBean = new QueryBean();
+        queryBean.setPage(1);
+        FamilyMember familyMember = new FamilyMember();
+        familyMember.setStatus(1);
+        IPage<FamilyMember> familyMemberIPage = familyMemberService.selectPage(queryBean, familyMember, 1);
+        System.out.println(familyMemberIPage);
+
+
         return "x";
     }
 

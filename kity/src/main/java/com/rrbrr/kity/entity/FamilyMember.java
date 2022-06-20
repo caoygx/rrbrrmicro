@@ -2,6 +2,8 @@ package com.rrbrr.kity.entity;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -37,6 +39,8 @@ public class FamilyMember implements Serializable {
     /**
      * 排行,男女分别排行
      */
+
+    @TableField(value="`order`")
     private Integer order;
 
     /**
